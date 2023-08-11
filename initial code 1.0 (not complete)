@@ -1,0 +1,69 @@
+
+import random 
+from art import logo, vs
+from game_data import data
+import os
+
+#import the art
+#show option A and B: with information on both sides 
+#if correct replace option B with A for comparison
+# add vs. art
+# place a new option b in the bottom
+#state "who has the more followers? typ a or b: "
+#keep a scoring system
+
+# #'name': 'Instagram',
+#         'follower_count': 346,
+#         'description': 'Social media platform',
+#         'country': 'United States'
+
+count_comparison = 0
+score = 0
+
+def check_answer():
+  global score
+  global wrong_answer
+  if chosen == "count_comparison_a":
+    if count_comparison_a > count_comparison_b:
+      score += 1
+      return (f"You are right!")
+    else:
+      wrong_answer = False
+      print(f"You are wrong! Final Score: {score}")
+  
+  elif  chosen == "count_comparison_b":
+    if count_comparison_b > count_comparison_a:
+      score += 1
+      return (f"You are right!")
+    else:
+      wrong_answer = False
+      print(f"You are wrong! Final Score: {score}")
+
+def generate_comparison():
+  global count_comparison
+  key_list = ['name', 'description', 'country']
+  number_a = random.randint(0,len(data)-1)
+  count_comparison = data[number_a]['follower_count']
+  return (f"{data[number_a]['name']}, {data[number_a]['description']}, {data[number_a]['country']} ")
+
+
+wrong_answer = True
+while wrong_answer:
+  first_question = generate_comparison()
+  compare_a = (f"Compare A: {first_question}")
+  count_comparison_a = count_comparison
+  
+  second_question = generate_comparison()
+  compare_b = (f"Compare B: {second_question}")
+  count_comparison_b = count_comparison
+
+  if score == 0:
+    print(f"{logo}\n \nScore {score}\n \n{compare_a}\n \n{vs}\n \n{compare_b}")
+    choice = input("Who has more followers 'a' or 'b': ")
+  else:
+    print(f"{logo}\n \n{outcome} Score {score}\n \n{compare_a}\n \n{vs}\n \n{compare_b}")
+    choice = input("Who has more followers 'a' or 'b': ")
+    
+  chosen = (f"count_comparison_{choice}")
+  
+  outcome = check_answer()
