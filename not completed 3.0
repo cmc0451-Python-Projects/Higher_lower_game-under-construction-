@@ -1,0 +1,87 @@
+
+import random 
+from art import logo, vs
+from game_data import data
+import os
+
+score = 0
+count_comparison = 0
+count_comparison_a = 0
+count_comparison_b = 0
+storing_list = ["Compare A: ", "Compare B: "]
+storing_character = []
+
+def check_answer():
+  global score
+  if choice == "a":
+    if count_comparison_a > count_comparison_b:
+      return(f"You are right! Score {score}")
+      score += 1
+    if count_comparison_a < count_comparison_b:
+      return(f"You are wrong! Final Score {score}")
+  if choice == "b":
+    if count_comparison_b > count_comparison_a:
+      return(f"You are right! Score {score}")
+      score += 1
+    if count_comparison_b < count_comparison_a:
+      return(f"You are wrong! Final Score {score}")
+
+def generate_account():
+  global storing_list
+  global count_comparison
+  key_list = ['name', 'description', 'country']
+  number_a = random.randint(0,len(data)-1)
+  count_comparison = data[number_a]['follower_count']
+  account = (f"{data[number_a]['name']}, {data[number_a]['description']}, {data[number_a]['country']} ")
+  data.pop(number_a)
+  return account
+
+def first_question():
+  global storing_character
+  global count_comparison
+  global count_comparison_a
+  global count_comparison_b
+  account_1 = generate_account()
+  question_1 = (f"Compare A: {account_1}")
+  count_comparison_a = count_comparison
+  storing_character.append(account_1)
+  print(f"{question_1} + {count_comparison_a}")
+
+def second_question():
+  global storing_character
+  global count_comparison
+  global count_comparison_a
+  global count_comparison_b
+  account_2 = generate_account()
+  question_2 = (f"Compare B: {account_2}")
+  count_comparison_b = count_comparison
+  storing_character.append(account_2)
+  print(f"{question_2} + {count_comparison_b}")
+
+def switch():
+  global storing_character
+  global score
+  os.system("clear")
+  storing_character.pop(0)
+  storing_character.append(generate_account())
+  print(logo)
+  print(f"Score: {score}")
+  print(f"Compare A: {storing_character[0]}")
+  print(f"\n{vs}")
+  print(f"Compare B: {storing_character[1]}")
+  choice = input("Who has more followers? Type 'a' or 'b': ")
+
+print(logo)
+print(f"Score: {score}")
+first_question()
+print(f"\n{vs}")
+second_question()
+
+choice = input("Who has more followers? Type 'a' or 'b': ")
+
+wrong = False
+while not wrong:
+  check_answer()
+  switch()
+  
+  
