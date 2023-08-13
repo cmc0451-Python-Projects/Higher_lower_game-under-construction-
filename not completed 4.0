@@ -1,0 +1,62 @@
+ 
+import random 
+from art import logo, vs
+from game_data import data
+import os
+
+switch = 0
+score = 0
+score_a = 0
+score_b = 0
+question_rotation = []
+follow_value = []
+
+def check_answer():
+  global score
+  if chosen == "score_a":
+    if score_a > score_b:
+      score += 1
+      return (f"You are right! Score: {score}")
+    else:
+      return (f"Wrong answer! Final Score: {score}")
+  if chosen == "score_b":
+    if score_b > score_a:
+      score += 1
+      return (f"You are right! Score: {score}")
+    else:
+      return (f"Wrong answer! Final Score: {score}")
+      
+def game_screen(logo, score, question_1, vs, question_2):
+  print(f"{logo}\nScore: {score}\nCompare A: {question_1}\n{vs}\nCompare B: {question_2}")
+
+def game_screen_2(logo, score, question_1, vs, question_2):
+  question
+  print(f"{logo}\n{update} \nCompare A: {question_1}\n{vs}\nCompare B: {question_2}")
+  
+def generate_account():
+  global score_a
+  global score_b
+  global switch
+  key_list = ['name', 'description', 'country']
+  number_a = random.randint(0,len(data)-1)
+  account = (f"{data[number_a]['name']}, {data[number_a]['description']}, {data[number_a]['country']} ")
+  if switch == 0:
+    score_a = data[number_a]['follower_count']
+    switch += 1
+  elif switch == 1:
+    score_b = data[number_a]['follower_count']
+    switch = 0
+  return account
+  
+game_screen(logo=logo, score=score, question_1=generate_account(), vs=vs, question_2=generate_account())
+
+choice = input("Who has more followers? Type 'a' or 'b': ")
+chosen = (f"score_{choice}")
+update = check_answer()
+os.system("clear")
+game_screen_2(logo=logo, score=score, question_1=generate_account(), vs=vs, question_2=generate_account())
+
+
+
+
+
