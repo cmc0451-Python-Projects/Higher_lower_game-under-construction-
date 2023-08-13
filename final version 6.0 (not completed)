@@ -1,0 +1,87 @@
+from art import logo
+from art import vs
+from game_data import data
+import random
+import os
+
+score = 0
+test = 0
+sequence_call = []
+sequence_call_int = []
+
+def switch():
+  global sequence_call
+  global sequence_call_int
+  sequence_call.pop(0)
+  sequence_call_int.pop(0)
+def game_screen():
+  print(logo)
+  print(f"Score: {score}")
+  print(f"Comparison A: {sequence_call[0]}")
+  print(vs)
+  print(f"Comparison B: {sequence_call[1]}")
+def game_screen_2():
+  global choice
+  print(logo)
+  print(f"{verdict} Score: {score}")
+  print(f"Comparison A: {sequence_call[0]}")
+  print(vs)
+  print(f"Comparison B: {sequence_call[1]}")
+  choice = input("Who has more following 'A' or 'B': ")
+  
+def final_screen():
+  print(logo)
+  print(f"You Lose! Final Score: {score}")
+  print(vs)
+def get_comparison():
+  global data
+  global sequence_call
+  global sequence_call_int
+  global test
+  data_key_list = ['name', 'description', 'country']
+  number_a = random.randint(0,len(data)-1)
+  random_character = (f"{data[number_a]['name']}, {data[number_a]['description']}, {data[number_a]['country']} ")
+  sequence_call_int.append(data[number_a]['follower_count'])
+  
+  sequence_call.append(random_character) 
+  data.pop(number_a)
+  return random_character
+def initial_call():
+  counter = 0
+  for initial_compare in range(1,3):
+    get_comparison()
+def check_answer():
+  global score
+  global choice_int
+  global sequence_call_int
+  global wrong_answer
+  choice_int = 0
+  if choice == "a":
+    choice_int = sequence_call_int[0]
+  if choice == "b":
+    choice_int = sequence_call_int[1]
+  highest_number = max(sequence_call_int)
+  if choice_int == highest_number:
+    score += 1
+    return ("You're right!")
+  else:
+    wrong_answer = True
+    print(logo)
+    print(f"You lose! Final Score: {score}")
+    print(vs)
+    
+
+initial_call()
+game_screen()
+choice = input("Who has more following 'A' or 'B': ")
+
+wrong_answer = False
+while not wrong_answer:
+  os.system("clear")
+  verdict = check_answer()
+  if wrong_answer == False:
+    switch()
+    get_comparison()
+    game_screen_2()
+  if wrong_answer == True:
+    continue_ = input("Would you like to play again? 'Y' or 'N': ")
