@@ -1,0 +1,115 @@
+import art
+import random
+
+
+def initial_display_information(name, description, country, name2, description2, country2):
+    global answer
+    print(art.logo)
+    print(f"Compare A: {name}, a {description}, from {country}.")
+    print(art.vs)
+    print(f"Against B: {name2}, a {description2}, from {country2}.")
+    answer = input("Who has more followers?  type 'A' or 'B': ")
+
+def display_information(name, description, country, name2, description2, country2):
+    global random_number
+    global random_number2
+    global score
+    global answer
+    for numbers in range(0, 1000):
+        print(' ')
+    print(art.logo)
+    print(f"You're right! Current Score: {score}")
+    print(f"Compare A: {name}, a {description}, from {country}.")
+    print(art.vs)
+    print(f"Against B: {name2}, a {description2}, from {country2}.")
+    answer = input("Who has more followers?  type 'A' or 'B': ")
+
+def is_answer_correct(count, count2, reply):
+    global winner
+    global game_data
+    global top_follower
+    global answer
+    global continue_game
+    global score
+    if count > count2:
+        top_follower = game_data.data[random_number]['name']
+    elif count2 > count:
+        top_follower = game_data.data[random_number2]['name']
+
+    _a = game_data.data[random_number]['name']
+    _b = game_data.data[random_number2]['name']
+    if reply == 'a':
+        answer = _a
+    elif reply == 'b':
+        answer = _b
+
+    if top_follower == answer:
+        score += 1
+        return True
+        rotate_position(random_number, random_number2)
+
+
+    elif top_follower != answer:
+        for number in range(0, 1000):
+            print(' ')
+        print(art.logo)
+        print(f"Sorry, That's wrong.  Final Score: {score}")
+        return False
+
+def rotate_position(position_a, position_b):
+    global random_number
+    global random_number2
+    global its_different
+    random_number = random_number2
+    random_number2 = random.randint(0, len(game_data.data))
+    its_different = True
+    while its_different:
+        if random_number == random_number2:
+            random_number2 = random.randint(0, len(game_data.data))
+            its_different = True
+        elif random_number2 != random_number:
+            its_different = False
+
+top_follower = 0
+answer = ''
+score = 0
+different_data = True
+its_different = True
+continue_playing = True
+while continue_playing:
+    while different_data:
+        random_number = random.randint(0, len(game_data.data)-1)
+        random_number2 = random.randint(0, len(game_data.data)-1)
+        if random_number == random_number2:
+            random_number2 = random.randint(0, len(game_data.data)-1)
+            different_data = True
+        elif random_number2 != random_number:
+            different_data = False
+
+    initial_display_information(game_data.data[random_number]['name'], game_data.data[random_number]['description'],
+                                game_data.data[random_number]['country'], game_data.data[random_number2]['name'],
+                                game_data.data[random_number2]['description'], game_data.data[random_number2]['country'])
+
+
+
+    continue_game = True
+    while continue_game:
+
+        continue_the_game = is_answer_correct(game_data.data[random_number]['follower_count'], game_data.data[random_number2]['follower_count'], answer)
+        if continue_the_game == False:
+            continue_game = False
+            continue_playing = False
+        elif continue_the_game == True:
+            rotate_position(random_number, random_number2)
+            display_information(game_data.data[random_number]['name'], game_data.data[random_number]['description'],
+                            game_data.data[random_number]['country'], game_data.data[random_number2]['name'],
+                            game_data.data[random_number2]['description'], game_data.data[random_number2]['country'])
+
+    continue_playing = input("Would you like to continue playing 'Y' or 'N': ").lower()
+    if continue_playing == "y":
+        top_follower = 0
+        answer = ''
+        score = 0
+    elif continue_playing == "n":
+        print("have a good day")
+        continue_playing == False
